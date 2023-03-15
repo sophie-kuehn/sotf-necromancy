@@ -1,6 +1,6 @@
 ## Sons of the Forest Necromancy
 
-This Linux Bash script will resurrect Kelvin and Virginia.
+This Linux Bash script will resurrect Kelvin and Virginia by altering the save game files.
 
 Make a backup before execution. Use on own risk.
 
