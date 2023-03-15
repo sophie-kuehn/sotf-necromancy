@@ -1,0 +1,32 @@
+#!/bin/bash
+
+if ! which jq > /dev/null; then apt install jq; fi
+
+jq -cr '.Data.GameState' \
+GameStateSaveData.json > GameStateSaveData.json.tmp
+
+jq -cr '.IsRobbyDead = false | .IsVirginiaDead = false' \
+GameStateSaveData.json.tmp > GameStateSaveData.json.tmp2
+
+jq -cr '.Data.GameState = $ngs' \
+--rawfile ngs GameStateSaveData.json.tmp2 \
+GameStateSaveData.json > GameStateSaveData.json.tmp
+
+rm GameStateSaveData.json
+rm GameStateSaveData.json.tmp2
+mv GameStateSaveData.json.tmp GameStateSaveData.json
+
+jq -cr '.Data.VailWorldSim' \
+SaveData.json > SaveData.json.tmp
+
+jq -cr '(.Actors[] | select(.TypeId == 9)) .State = 2 | (.Actors[] | select(.TypeId == 9)) .Stats.Health = 100 | (.Actors[] | select(.TypeId == 10)) .State = 2 | (.Actors[] | select(.TypeId == 10)) .Stats.Health = 100' \
+SaveData.json.tmp > SaveData.json.tmp2
+
+jq -cr '.Data.VailWorldSim = $nvws' \
+--rawfile nvws SaveData.json.tmp2 \
+SaveData.json > SaveData.json.tmp
+
+rm SaveData.json
+rm SaveData.json.tmp2
+mv SaveData.json.tmp SaveData.json
+
